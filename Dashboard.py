@@ -17,8 +17,8 @@ st.title("Product Supply Chain Dashboard")
 
 @st.cache_data
 def load_data():
-    df1 = pd.read_csv("../work/Log_Data.csv")
-    df2 = pd.read_csv("../work/Products.csv")
+    df1 = pd.read_csv("Log_Data.csv")
+    df2 = pd.read_csv("Products.csv")
     return df1, df2
 
 df1, df2 = load_data()
