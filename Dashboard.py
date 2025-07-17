@@ -101,7 +101,7 @@ col1.plotly_chart(fig_avg_returned_product, use_container_width=True)
 col2.dataframe(avg_returnedproducts)
 
 
-fig_rate_returnedproduct = px.bar(rate_returnedproducts, x="Source Factory",y="Return Rate (%)", color="Gender", title="Return Rate (%)", labels={"Return Rate (%)":"No. of Pieces Returned per Factory"},
+fig_rate_returnedproduct = px.bar(rate_returnedproducts, x="Source Factory",y="Return Rate (%)", barmode="group",color="Gender", title="Return Rate (%)", labels={"Return Rate (%)":"No. of Pieces Returned per Factory"},
     color_discrete_sequence=px.colors.qualitative.Prism)
 st.plotly_chart(fig_rate_returnedproduct, use_container_width=True)
 
