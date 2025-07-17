@@ -1,0 +1,41 @@
+Product_ID,Name,Gender,Selling_Price,Weight (in Kg)
+P001,Men's Tshirt,M,20.0,0.18
+P002,Men's Shirt,M,30.0,0.2
+P003,Men's Polo Shirt,M,30.0,0.2
+P004,Men's Sweatshirt,M,40.0,0.4
+P005,Men's Hoodie,M,40.0,0.4
+P006,Men's Jeans,M,50.0,0.9
+P007,Men's Shorts,M,30.0,0.6
+P008,Men's Sweatpants,M,40.0,0.5
+P009,Men's Chinos,M,50.0,0.6
+P010,Men's Jacket,M,70.0,1.2
+P011,Men's Blazer,M,80.0,2.2
+P012,Men's Sunglasses,M,30.0,0.03
+P013,Men's Belt,M,30.0,0.6
+P014,Men's Gloves,M,15.0,0.05
+P015,Women's Tshirt,F,20.0,0.18
+P016,Women's Shirt,F,30.0,0.2
+P017,Women's Polo Shirt,F,30.0,0.2
+P018,Women's Sweatshirt,F,40.0,0.4
+P019,Women's Hoodie,F,40.0,0.4
+P020,Women's Jeans,F,50.0,0.9
+P021,Women's Shorts,F,30.0,0.6
+P022,Women's Sweatpants,F,40.0,0.5
+P023,Women's Chinos,F,50.0,0.6
+P024,Women's Jacket,F,70.0,1.2
+P025,Women's Blazer,F,80.0,2.2
+P026,Women's Cardigan,F,60.0,0.8
+P027,Women's Blouse,F,40.0,0.15
+P028,Women's Leggings,F,30.0,0.1
+P029,Women's Skirt,F,40.0,0.2
+P030,Women's Jumpsuit,F,60.0,0.4
+P031,Women's Coat,F,80.0,1.4
+P032,Women's Sunglasses,F,30.0,0.03
+P033,Women's Belt,F,30.0,0.6
+P034,Women's Gloves,F,15.0,0.05
+P035,Women's Sandals,F,30.0,0.4
+P036,Socks,U,10.0,0.06
+P037,Scarf,U,30.0,0.3
+P038,Baseball Cap,U,20.0,0.35
+P039,Tote Bag,U,25.0,0.5
+P040,Hat,U,25.0,0.3
