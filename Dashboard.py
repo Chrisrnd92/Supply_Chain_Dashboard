@@ -17,8 +17,8 @@ st.title("Product Supply Chain Dashboard")
 
 @st.cache_data
 def load_data():
-    df1 = pd.read_csv("Log_Data.csv")
-    df2 = pd.read_csv("Products.csv")
+    df1 = pd.read_csv("../work/Log_Data.csv")
+    df2 = pd.read_csv("../work/Products.csv")
     return df1, df2
 
 df1, df2 = load_data()
@@ -43,7 +43,7 @@ st.sidebar.header("Filters")
 Product_Analysis = (
                df.groupby(["Product Name", "Gender"])[["No. of Pieces Sold", "No. of Pieces Returned"]].sum().reset_index()
                )
-fig_Product_Analysis = px.pie(Product_Analysis, names='Product Name', values='No. of Pieces Sold', title='Net Product Sold by Product Type')
+fig_Product_Analysis = px.pie(Product_Analysis, names='Product Name', values='No. of Pieces Sold', title='Products Sold Distribution')
 col1, col2 = st.columns(2)
 col1.dataframe(Product_Analysis)
 col2.plotly_chart(fig_Product_Analysis, use_container_width=True)
@@ -87,23 +87,51 @@ avg_returnedproducts = (
                .rename(columns={"No. of Pieces Returned": "Avg. Pieces Returned"})
                )
 rate_returnedproducts = (
-               filtered.groupby(["Source Factory","Gender"])[["No. of Pieces Returned", "No. of Pieces Sold"]].sum().reset_index()
+               filtered.groupby(["Source Factory"])[["No. of Pieces Returned", "No. of Pieces Sold"]].sum().reset_index()
                )
 rate_returnedproducts["Return Rate (%)"] = (rate_returnedproducts["No. of Pieces Returned"] / rate_returnedproducts["No. of Pieces Sold"]
 ) * 100
 
+rate_gender_returnedproducts = (
+               filtered.groupby(["Source Factory","Gender"])[["No. of Pieces Returned", "No. of Pieces Sold"]].sum().reset_index()
+               )
+rate_gender_returnedproducts["Return Rate (%)"] = (rate_gender_returnedproducts["No. of Pieces Returned"] / rate_gender_returnedproducts["No. of Pieces Sold"]
+) * 100
+
 st.header("Product Retun Analysis")
-fig_avg_returned_product = px.bar(avg_returnedproducts, x="Source Factory",y="Avg. Pieces Returned", title="Avg. Pieces Returned", labels={"Avg. of Pieces Returned":"No. of Pieces Returned per Factory"},
+fig_avg_returned_product = px.bar(avg_returnedproducts, x="Avg. Pieces Returned",y="Source Factory", title="Average Pieces Returned", labels={"Avg. of Pieces Returned":"No. of Pieces Returned per Factory"},
     color_discrete_sequence=px.colors.qualitative.G10)
-col1, col2 = st.columns([4, 2])
 
+fig_rate_returned_product = px.bar(rate_returnedproducts, x="Source Factory",y="Return Rate (%)", title="Rate of Pieces Returned", labels={"Avg. of Pieces Returned":"No. of Pieces Returned per Factory"},
+    color_discrete_sequence=px.colors.qualitative.Dark24)
+
+col1, col2 = st.columns(2)
 col1.plotly_chart(fig_avg_returned_product, use_container_width=True)
-col2.dataframe(avg_returnedproducts)
+col2.plotly_chart(fig_rate_returned_product, use_container_width=True)
 
+pivot_df1 = pd.pivot_table(
+                            data=df,
+                            index=None,
+                            columns='Source Factory',
+                            values='No. of Pieces Returned',
+                            aggfunc='sum'
+                            )
+pivot_df1.index = ['Total Products Returned']
+st.dataframe(pivot_df1)
 
-fig_rate_returnedproduct = px.bar(rate_returnedproducts, x="Source Factory",y="Return Rate (%)", barmode="group",color="Gender", title="Return Rate (%)", labels={"Return Rate (%)":"No. of Pieces Returned per Factory"},
+rate_df = df.groupby("Source Factory")[["No. of Pieces Returned", "No. of Pieces Sold"]].sum().reset_index()
+rate_df["Product Return Rate (%)"] = (rate_df["No. of Pieces Returned"] / rate_df["No. of Pieces Sold"]) * 100
+pivot_df2 = rate_df.pivot_table(
+                            index=None,
+                            columns='Source Factory',
+                            values='Product Return Rate (%)'
+                            )
+
+st.dataframe(pivot_df2)
+
+fig_rate_gender_returnedproduct = px.bar(rate_gender_returnedproducts, x="Source Factory",y="Return Rate (%)", barmode='group' ,color="Gender", title="Return Rate (%)", labels={"Return Rate (%)":"No. of Pieces Returned per Factory"},
     color_discrete_sequence=px.colors.qualitative.Prism)
-st.plotly_chart(fig_rate_returnedproduct, use_container_width=True)
+st.plotly_chart(fig_rate_gender_returnedproduct, use_container_width=True)
 
 st.header("Male vs Female Product Returns Statistics")
 df["Date"] = pd.to_datetime(df["Date"])
