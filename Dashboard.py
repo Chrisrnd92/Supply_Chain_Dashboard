@@ -17,8 +17,8 @@ st.title("Product Supply Chain Dashboard")
 
 @st.cache_data
 def load_data():
-    df1 = pd.read_csv("Log_Data.csv")
-    df2 = pd.read_csv("Products.csv")
+    df1 = pd.read_csv("../work/Log_Data.csv")
+    df2 = pd.read_csv("../work/Products.csv")
     return df1, df2
 
 df1, df2 = load_data()
@@ -117,7 +117,7 @@ pivot_df1 = pd.pivot_table(
                             aggfunc='sum'
                             )
 pivot_df1.index = ['Total Products Returned']
-st.dataframe(pivot_df1)
+st.dataframe(pivot_df1.style.format("{:,}"))
 
 rate_df = df.groupby("Source Factory")[["No. of Pieces Returned", "No. of Pieces Sold"]].sum().reset_index()
 rate_df["Product Return Rate (%)"] = (rate_df["No. of Pieces Returned"] / rate_df["No. of Pieces Sold"]) * 100
