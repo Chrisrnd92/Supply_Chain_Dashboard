@@ -17,12 +17,20 @@ st.title("Product Supply Chain Dashboard")
 
 @st.cache_data
 def load_data():
-    df1 = pd.read_csv("Log_Data.csv")
-    df2 = pd.read_csv("Products.csv")
-    return df1, df2
+    df1 = pd.read_csv("../work/Log_Data.csv")
+    df2 = pd.read_csv("../work/Products.csv")
+    df3 = pd.read_csv('../work/Production_Costs.csv')
+    return df1, df2, df3
 
-df1, df2 = load_data()
+df1, df2, df3 = load_data()
+
+df1['ID'] = df1[' Source Factory'] + '_' + df1['Product_ID']
+df3['ID'] = df3['Factory_ID'] + '_' + df3['Product_ID']
+
 df = df1.merge(df2[['Product_ID','Name','Gender']], on='Product_ID', how='left')
+df = df.merge(df3[['ID','Manufac_Cost']], on='ID', how='left')
+
+
 
 #replace Names in the column Source Factory
 df.columns = df.columns.str.strip()
@@ -133,6 +141,18 @@ fig_rate_gender_returnedproduct = px.bar(rate_gender_returnedproducts, x="Source
     color_discrete_sequence=px.colors.qualitative.Prism)
 st.plotly_chart(fig_rate_gender_returnedproduct, use_container_width=True)
 
+
+cost_gender_returnedproducts = (
+               filtered.groupby(["Source Factory","Gender"])[["No. of Pieces Returned", "Manufac_Cost"]].sum().reset_index()
+               )
+cost_gender_returnedproducts["Manufacturing Costs of Product Returns"] = (cost_gender_returnedproducts["No. of Pieces Returned"] * cost_gender_returnedproducts["Manufac_Cost"])
+
+st.header("Cost of Product Returns")
+fig_cost_gender_returnedproduct = px.bar(cost_gender_returnedproducts, x="Source Factory",y="Manufacturing Costs of Product Returns", barmode='group' ,color="Gender", title="Manufacturing Costs of Product Returns",
+    color_discrete_sequence=px.colors.qualitative.Prism)
+st.plotly_chart(fig_cost_gender_returnedproduct, use_container_width=True)
+
+
 st.header("Male vs Female Product Returns Statistics")
 df["Date"] = pd.to_datetime(df["Date"])
 # Group by Date and Gender
@@ -158,9 +178,6 @@ fig1.update_traces(
 )
 
 st.plotly_chart(fig1, use_container_width=True)
-
-
-
 
 
 
